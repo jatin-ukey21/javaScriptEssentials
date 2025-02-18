@@ -6,6 +6,7 @@ function submitFeedback() {
     const designation = document.getElementById("designation")?.value || "";
     const productType = document.getElementById("productType")?.value || "";
     const feedback = document.getElementById("feedbackText")?.value || "";
+    const prod_feedback = document.getElementById("userExperience")?.value || "";
 
     if (document.getElementById("userName")) document.getElementById("userName").innerHTML = username;
     if (document.getElementById("userAge")) document.getElementById("userAge").innerHTML = age;
@@ -14,7 +15,8 @@ function submitFeedback() {
     if (document.getElementById("userDesignation")) document.getElementById("userDesignation").innerHTML = designation;
     if (document.getElementById("userProductChoice")) document.getElementById("userProductChoice").innerHTML = productType;
     if (document.getElementById("userFeedback")) document.getElementById("userFeedback").innerHTML = feedback;
-
+    if (document.getElementById("pfeed")) document.getElementById("pfeed").innerHTML = prod_feedback;
+    
     const userInfo = document.getElementById("userInfo");
     if (userInfo) userInfo.style.display = "block";
 
