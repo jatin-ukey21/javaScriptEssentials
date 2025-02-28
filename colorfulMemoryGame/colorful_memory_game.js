@@ -62,7 +62,7 @@ function handleCardClick(event) {
         return;
     }
     card.textContent =  card.dataset.color;
-    card.style.backgroundcolor = card.dataset.color;
+    card.style.backgroundColor = card.dataset.color;
     selectedCards.push(card);
     /**
      Checks if two cards have been selected. If two cards have been chosen,
@@ -74,3 +74,82 @@ function handleCardClick(event) {
     }
 }
 
+function checkMatch() {
+    const [card1,card2] = selectedCards;
+    if (card1.dataset.color === card2.dataset.color) {
+        card1.classList.add('matched');
+        card2.classList.add('matched');
+        score+=2;
+        scoreElement.textContent = `Score ${score}`;
+    }
+    else{
+        card1.textContent = '?';
+        card2.textContent = '?';
+        card1.style.backgroundColor = '#ddd';
+        card2.style.backgroundColor = '#ddd';
+    }
+    selectedCards = [];
+}
+
+/**
+ The startGame() Function is a pivotal part of initializing
+  and starting the memory match game
+
+  ### **Game Functionality Breakdown**  
+
+#### **1. Setting Initial Game State**  
+- `let timeLeft = 30;` → Sets the game duration to 30 seconds.  
+- `startbtn.disabled = true;` → Disables the start button to prevent multiple game initiations.  
+- `score = 0;` → Resets the score for a new game.  
+- `scoreElement.textContent = Score: ${score};` → Updates the displayed score to reflect the reset.  
+
+#### **2. Starting the Game Timer**  
+- `startGameTimer(timeLeft);` → Begins the countdown from the defined time limit.  
+
+#### **3. Preparing Cards and Game Elements**  
+- `cards = shuffle(colors.concat(colors));` → Creates card pairs by duplicating and shuffling colors.  
+- `selectedCards = [];` → Clears any previous selections to prepare for a new game.  
+- `gameContainer.innerHTML = '';` → Removes any existing cards from previous games.  
+- `generateCards();` → Generates a new set of cards for the game.  
+
+#### **4. Enabling Card Click Event**  
+- `gameContainer.addEventListener('click', handleCardClick);` → Adds an event listener to handle card selection during gameplay.  
+ */
+function disableCards() {
+    gameContainer.classList.add('disabled');
+}
+function enableCards() {
+    gameContainer.classList.remove('disabled');
+}
+
+function startGame() {
+    let timeLeft = 30;
+    startbtn.disabled = true;
+    score = 0; //reset score to 0
+    scoreElement.textContent = `Score: ${score}`;
+    startGameTimer(timeLeft);
+    cards = shuffle(colors.concat(colors));
+    selectedCards = [];
+    gameContainer.innerHTML = '';
+    generateCards();
+    enableCards();
+    gameContainer.addEventListener('click',handleCardClick);
+}
+
+function startGameTimer(timeLeft) {
+    timerElement.textContent = `Time Left: ${timeLeft}`;
+    gameInterval = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `Time Left: ${timeLeft}`;
+
+        if (timeLeft === 0) {
+            clearInterval(gameInterval);
+            disableCards();
+            let timeLeft = 30;
+            alert('Game Over!');
+            startbtn.disabled = false;
+        }
+    }, 1000);
+}
+
+startbtn.addEventListener('click', startGame);
